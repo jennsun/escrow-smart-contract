@@ -37,8 +37,8 @@ contract Escrow is ReentrancyGuard {
     uint256 public endTime;
 
     // EVENTS
-    event Fund(address indexed sender, uint256 amount);
-    event Withdraw(address indexed sender, uint256 amount);
+    event DidFund(address indexed sender, uint256 amount);
+    event DidWithdraw(address indexed sender, uint256 amount);
 
     // MODIFIERS
     modifier onlyRequester() {
@@ -68,7 +68,7 @@ contract Escrow is ReentrancyGuard {
         require(address(_paymentToken) != address(0), "0x0 saleToken");
         // start timestamp must be in future
         require(block.timestamp < _startTime, "start timestamp too early");
-        // end timestamp must be after start timestamp
+        // end timestamp must be after start timestamp - move to web2
         require(_startTime < _endTime, "end timestamp before start");
         // price of task cannot be 0
         // require(_taskPriceTotal != 0, "price cannot be 0");
@@ -83,9 +83,8 @@ contract Escrow is ReentrancyGuard {
 
     // Function to allocate funds to the task from Requester
     function fund(uint256 amount) external onlyRequester {
-        // make sure task has not started (can change funding up to
-        // an hour before task is open)
-        require(block.timestamp < startTime - 600, "sale already started");
+        // make sure task has not started
+        require(block.timestamp < startTime, "sale already started");
 
         // transfer funding to this contract
         paymentToken.safeTransferFrom(msg.sender, address(this), amount);
@@ -95,7 +94,7 @@ contract Escrow is ReentrancyGuard {
         pricePerTask = taskPriceTotal / numberOfTasks;
 
         // emit
-        emit Fund(msg.sender, amount);
+        emit DidFund(msg.sender, amount);
     }
 
     // Function to withdraw task money after task completed
@@ -104,8 +103,8 @@ contract Escrow is ReentrancyGuard {
         require(endTime < block.timestamp, "cannot withdraw yet");
         // prevent repeat withdraw
         require(hasWithdrawn[msg.sender] == false, "already withdrawn");
-        // must not be a zero price sale
-        require(taskPriceTotal != 0, "zero price task");
+        // must not be a zero price sale - taken care of in task creation form
+        // require(taskPriceTotal != 0, "zero price task");
 
         // set withdrawn to true
         hasWithdrawn[msg.sender] = true;
@@ -117,7 +116,7 @@ contract Escrow is ReentrancyGuard {
         paymentToken.safeTransfer(msg.sender, pricePerTask);
 
         // emit
-        emit Withdraw(msg.sender, pricePerTask);
+        emit DidWithdraw(msg.sender, pricePerTask);
     }
 
     function greet() public pure returns (string memory) {
