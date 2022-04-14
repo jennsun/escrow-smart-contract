@@ -55,7 +55,11 @@ contract Escrow is ReentrancyGuard {
     // }
 
     // FUNCTIONS
-    constructor(
+    constructor() payable {
+        console.log("Constructor of Escrow");
+    }
+
+    function initialize(
         ERC20 _paymentToken,
         uint256 _numberOfTasks,
         address _requester,

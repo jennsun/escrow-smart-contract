@@ -17,9 +17,9 @@ export const getBlockTime = async (): Promise<number> => {
 };
 
 export const mineTimeDelta = async (seconds: number): Promise<void> => {
-  await network.provider.send('evm_increaseTime', [seconds])
-  await network.provider.send('evm_mine')
-}
+  await network.provider.send("evm_increaseTime", [seconds]);
+  await network.provider.send("evm_mine");
+};
 
 // describe("Greeter", function () {
 //   it("Should return the new greeting once it's changed", async function () {
@@ -109,6 +109,7 @@ describe("Escrow", function () {
       startTime,
       endTime
     );
+    await Escrow.initialize();
 
     // requester funds 10 ETH
     await PaymentToken.connect(requester).approve(
@@ -122,7 +123,7 @@ describe("Escrow", function () {
     );
 
     // fast forward from current time to after end time
-    mineTimeDelta(endTime - (await getBlockTime()))
+    mineTimeDelta(endTime - (await getBlockTime()));
 
     // tasker withdraws 1 ETH
     await escrow.connect(tasker).withdraw();
