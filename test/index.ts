@@ -68,7 +68,7 @@ describe("Escrow", function () {
   let Escrow: Contract;
   let PaymentToken: any;
 
-  let snapshotBlock: number; // block at which to take allocation snapshot
+  // let snapshotBlock: number; // block at which to take allocation snapshot
   let startTime: number; // start timestamp of sale (inclusive)
   let endTime: number; // end timestamp of sale (inclusive)
   const totalTaskPrice = "10000000000000000000"; // 10 PAY per SALE
@@ -77,7 +77,7 @@ describe("Escrow", function () {
   beforeEach(async () => {
     const currBlock = await ethers.provider.getBlockNumber();
     const currTime = await getBlockTime();
-    snapshotBlock = currBlock + 90;
+    // snapshotBlock = currBlock + 90;
     startTime = currTime + 10000;
     endTime = currTime + 20000;
 
@@ -102,14 +102,17 @@ describe("Escrow", function () {
     const escrowFactory = await ethers.getContractFactory("Escrow");
 
     // constructor parameters (paymentAmount)
-    const escrow = await escrowFactory.deploy(
-      PaymentToken.address,
-      numberOfTasks,
-      requester.address,
-      startTime,
-      endTime
-    );
-    await Escrow.initialize();
+    const escrow = await escrowFactory.deploy();
+
+    await escrow
+      .connect(requester)
+      .initialize(
+        PaymentToken.address,
+        numberOfTasks,
+        requester.address,
+        startTime,
+        endTime
+      );
 
     // requester funds 10 ETH
     await PaymentToken.connect(requester).approve(

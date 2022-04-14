@@ -4,6 +4,7 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "hardhat/console.sol";
 
 contract Escrow is ReentrancyGuard {
     using SafeERC20 for ERC20;
@@ -59,13 +60,39 @@ contract Escrow is ReentrancyGuard {
         console.log("Constructor of Escrow");
     }
 
+    // constructor(
+    //     ERC20 _paymentToken,
+    //     uint256 _numberOfTasks,
+    //     address _requester,
+    //     uint256 _startTime,
+    //     uint256 _endTime
+    // ) {
+    //     // funder cannot be 0
+    //     require(_requester != address(0), "0x0 funder");
+    //     // sale token cannot be 0
+    //     require(address(_paymentToken) != address(0), "0x0 saleToken");
+    //     // start timestamp must be in future
+    //     require(block.timestamp < _startTime, "start timestamp too early");
+    //     // end timestamp must be after start timestamp - move to web2
+    //     require(_startTime < _endTime, "end timestamp before start");
+    //     // price of task cannot be 0
+    //     // require(_taskPriceTotal != 0, "price cannot be 0");
+    //     // taskPriceTotal = _taskPriceTotal;
+    //     numberOfTasks = _numberOfTasks;
+    //     requester = _requester;
+    //     paymentToken = _paymentToken;
+    //     // saleToken = _saleToken;
+    //     startTime = _startTime;
+    //     endTime = _endTime;
+    // }
+
     function initialize(
         ERC20 _paymentToken,
         uint256 _numberOfTasks,
         address _requester,
         uint256 _startTime,
         uint256 _endTime
-    ) {
+    ) public {
         // funder cannot be 0
         require(_requester != address(0), "0x0 funder");
         // sale token cannot be 0
