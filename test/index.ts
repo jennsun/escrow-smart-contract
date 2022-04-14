@@ -81,7 +81,7 @@ describe("Escrow", function () {
     startTime = currTime + 10000;
     endTime = currTime + 20000;
 
-    // get test accounts
+    // get test accounts - chrissy: do we need await?
     owner = (await ethers.getSigners())[0];
     requester = (await ethers.getSigners())[1];
     tasker = (await ethers.getSigners())[2];
@@ -99,10 +99,10 @@ describe("Escrow", function () {
   it("Should allow requester to fund 10ETH and taskers withdraw 1ETH", async function () {
     const numberOfTasks = 10;
     // deploy Escrow
-    const Escrow = await ethers.getContractFactory("Escrow");
+    const escrowFactory = await ethers.getContractFactory("Escrow");
 
     // constructor parameters (paymentAmount)
-    const escrow = await Escrow.deploy(
+    const escrow = await escrowFactory.deploy(
       PaymentToken.address,
       numberOfTasks,
       requester.address,
