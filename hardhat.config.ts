@@ -29,8 +29,10 @@ const config: HardhatUserConfig = {
     hardhat: {},
     matic: {
       url: "https://polygon-mumbai.g.alchemy.com/v2/MAF6uqy-cnxEhxLLHLlbvzChyNG85SzU",
-      accounts: ["149767886875bffdd1ec7c947a91d3f3d95b4aa6655284e84b9af79046232c51"],
-        // process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+      accounts: [
+        "0x149767886875bffdd1ec7c947a91d3f3d95b4aa6655284e84b9af79046232c51",
+      ],
+      // process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     // matic: {
     //   url: process.env.MUMBAI_URL || "",

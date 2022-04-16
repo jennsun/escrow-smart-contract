@@ -3,7 +3,7 @@
 // //
 // // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // // Runtime Environment's members available in the global scope.
-import { ethers } from "hardhat";
+import hre from "hardhat";
 // import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
 // export const getBlockTime = async (): Promise<number> => {
@@ -80,7 +80,9 @@ import { ethers } from "hardhat";
 // });
 
 const main = async () => {
-  const escrowContractFactory = await ethers.getContractFactory("Escrow");
+  const escrowContractFactory = await hre.ethers.getContractFactory(
+    "EscrowFactory"
+  );
   const escrowContract = await escrowContractFactory.deploy();
   await escrowContract.deployed();
   console.log(
