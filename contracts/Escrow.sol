@@ -30,12 +30,14 @@ contract Escrow is ReentrancyGuard {
     address public requester;
     // payment token
     ERC20 public paymentToken;
+    // this contract's address
+    address public thisContractAddress;
     // sale token
     // ERC20 public saleToken;
     // start timestamp when sale is active (inclusive)
-    uint256 public startTime;
+    // uint256 public startTime;
     // end timestamp when sale is active (inclusive)
-    uint256 public endTime;
+    // uint256 public endTime;
 
     // EVENTS
     event DidFund(address indexed sender, uint256 amount);
@@ -63,18 +65,16 @@ contract Escrow is ReentrancyGuard {
     constructor(
         ERC20 _paymentToken,
         uint256 _numberOfTasks,
-        address _requester,
-        uint256 _startTime,
-        uint256 _endTime
-    ) {
+        address _requester
+    ) payable {
         // funder cannot be 0
         require(_requester != address(0), "0x0 funder");
         // sale token cannot be 0
         require(address(_paymentToken) != address(0), "0x0 saleToken");
         // start timestamp must be in future
-        require(block.timestamp < _startTime, "start timestamp too early");
+        // require(block.timestamp < _startTime, "start timestamp too early");
         // end timestamp must be after start timestamp - move to web2
-        require(_startTime < _endTime, "end timestamp before start");
+        // require(_startTime < _endTime, "end timestamp before start");
         // price of task cannot be 0
         // require(_taskPriceTotal != 0, "price cannot be 0");
         // taskPriceTotal = _taskPriceTotal;
@@ -82,8 +82,12 @@ contract Escrow is ReentrancyGuard {
         requester = _requester;
         paymentToken = _paymentToken;
         // saleToken = _saleToken;
-        startTime = _startTime;
-        endTime = _endTime;
+        // startTime = _startTime;
+        // endTime = _endTime;
+    }
+
+    function setAddress(address _thisContractAddress) public payable {
+        thisContractAddress = _thisContractAddress;
     }
 
     // function initialize(
@@ -115,7 +119,7 @@ contract Escrow is ReentrancyGuard {
     // Function to allocate funds to the task from Requester
     function fund(uint256 amount) external onlyRequester {
         // make sure task has not started
-        require(block.timestamp < startTime, "sale already started");
+        // require(block.timestamp < startTime, "sale already started");
 
         // transfer funding to this contract
         paymentToken.safeTransferFrom(msg.sender, address(this), amount);
@@ -131,7 +135,7 @@ contract Escrow is ReentrancyGuard {
     // Function to withdraw task money after task completed
     function withdraw() external nonReentrant {
         // must be past end timestamp
-        require(endTime < block.timestamp, "cannot withdraw yet");
+        // require(endTime < block.timestamp, "cannot withdraw yet");
         // prevent repeat withdraw
         require(hasWithdrawn[msg.sender] == false, "already withdrawn");
         // must not be a zero price sale - taken care of in task creation form

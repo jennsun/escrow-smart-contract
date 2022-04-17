@@ -12,23 +12,21 @@ contract EscrowFactory {
     function createNewEscrow(
         ERC20 _paymentToken,
         uint256 _numberOfTasks,
-        address _requester,
-        uint256 _startTime,
-        uint256 _endTime
+        address _requester
     ) public {
         Escrow escrow = new Escrow(
             _paymentToken,
             _numberOfTasks,
-            _requester,
-            _startTime,
-            _endTime
+            _requester
+            // _startTime,
+            // _endTime
         );
         escrowArray.push(escrow);
         escrowArrayLength++;
         emit CreatedNewEscrow(escrow);
     }
 
-    function getEscrowArrayLength() public returns (uint256) {
-        return escrowArrayLength;
-    }
+    // function getEscrowArrayLength() public returns (uint256) {
+    //     return escrowArrayLength;
+    // }
 }
