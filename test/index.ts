@@ -1,7 +1,6 @@
 import "@nomiclabs/hardhat-ethers";
 import { expect } from "chai";
 import { ethers, network } from "hardhat";
-// import { getBlockTime, getGasUsed, mineNext, mineTimeDelta } from './helpers'
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { Contract } from "@ethersproject/contracts";
 import { BigNumber } from "ethers";
@@ -20,39 +19,6 @@ export const mineTimeDelta = async (seconds: number): Promise<void> => {
   await network.provider.send("evm_increaseTime", [seconds]);
   await network.provider.send("evm_mine");
 };
-
-// describe("Greeter", function () {
-//   it("Should return the new greeting once it's changed", async function () {
-//     const Greeter = await ethers.getContractFactory("Greeter");
-//     const greeter = await Greeter.deploy("Hello, world!");
-//     await greeter.deployed();
-
-//     expect(await greeter.greet()).to.equal("Hello, world!");
-
-//     const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
-
-//     // wait until the transaction is mined
-//     await setGreetingTx.wait();
-
-//     expect(await greeter.greet()).to.equal("Hola, mundo!");
-//   });
-// });
-
-// it("Should allow requester to deposit 10ETH", async function () {
-//   // const Greeter = await ethers.getContractFactory("Escrow");
-//   // // constructor parameters
-//   // const greeter = await Greeter.deploy();
-//   // await greeter.deployed();
-
-//   // expect(await greeter.greet()).to.equal("Hello, world!");
-
-//   // const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
-
-//   // wait until the transaction is mined
-//   // await setGreetingTx.wait();
-
-//   // expect(await greeter.greet()).to.equal("Hola, mundo!");
-// });
 
 describe("Escrow", function () {
   // unset timeout from the test
@@ -77,11 +43,9 @@ describe("Escrow", function () {
   beforeEach(async () => {
     const currBlock = await ethers.provider.getBlockNumber();
     const currTime = await getBlockTime();
-    // snapshotBlock = currBlock + 90;
     startTime = currTime + 10000;
     endTime = currTime + 20000;
 
-    // get test accounts - chrissy: do we need await?
     owner = (await ethers.getSigners())[0];
     requester = (await ethers.getSigners())[1];
     tasker = (await ethers.getSigners())[2];
@@ -116,7 +80,7 @@ describe("Escrow", function () {
 
     // requester funds 10 ETH
     await PaymentToken.connect(requester).approve(
-      (escrow as unknown as any).address,
+      ((escrow as unknown) as any).address,
       totalTaskPrice
     );
 
@@ -142,8 +106,4 @@ describe("Escrow", function () {
     );
     expect(await escrow.hasWithdrawn(tasker2.address)).to.equal(true);
   });
-  // it("Should allow tasker to withdraw 1 ETH", async function () {
-  // };
-  // it("Should allow tasker2 to withdraw 1 ETH", async function () {
-  // };
 });

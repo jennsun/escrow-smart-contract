@@ -25,8 +25,4 @@ contract EscrowFactory {
         escrowArrayLength++;
         emit CreatedNewEscrow(escrow);
     }
-
-    // function getEscrowArrayLength() public returns (uint256) {
-    //     return escrowArrayLength;
-    // }
 }
