@@ -148,7 +148,12 @@ contract Escrow is ReentrancyGuard {
         withdrawerCount += 1;
 
         // transfer owed sale token to buyer
+        // option 1
         paymentToken.safeTransfer(msg.sender, pricePerTask);
+        // option 2
+        // require(pricePerTask <= address(this).balance, "Trying to withdraw more than contract has");
+        // (bool success, ) = (msg.sender).call{value: pricePerTask}(""); // native matic
+        // require(success, "Failed to transfer money from contract");
 
         // emit
         emit DidWithdraw(msg.sender, pricePerTask);
