@@ -18,8 +18,6 @@ contract EscrowFactory {
             _paymentToken,
             _numberOfTasks,
             _requester
-            // _startTime,
-            // _endTime
         );
         escrowArray.push(escrow);
         escrowArrayLength++;
