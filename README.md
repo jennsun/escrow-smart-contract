@@ -1,3 +1,1 @@
-This is the github repository for the web3 smart contracts for the COS495 project GIG.
-The escrow smart contracts help a requester fund their tasks and taskers
-withdraw after their task is completed and approved.
+This repository hosts the web3 smart contracts designed for widespread deployment in the GIG application. The set of escrow smart contracts serve to empower requesters by enabling them to allocate funds for their tasks while ensuring taskers are only paid upon satisfactory completion and approval. The contracts are written in the highly secure and efficient Solidity programming language.
